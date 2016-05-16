@@ -1,68 +1,147 @@
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>Flickr Searcher</title>
+        
         <script type="text/javascript" src="libs/jquery-2.2.3.min.js"></script>
         <script type="text/javascript" src="js/credencialesFlickr.js"></script>
+        <link rel="stylesheet" type="text/css" href="styles/main.css"></link>
+        <link href='http://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet' type='text/css'>
+        <link href="styles/bootstrap.min.css" rel="stylesheet">
+    
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div id= "Indice">
-            <h1>Buscador Flickr</h1>
-            <label>Nombre de usuario</label>
-            <input id="usernameInput" placeholder="Introduzca un nombre de usuario"/>
-            <button id="userSearchButton">Buscar</button>
+        <div id="formSearch">
+            <div class="pageSection container-fluid">
+                <h1 class="Three-Dee">Flickr Searcher</h1>
+                <h2>Introduzca un nombre de usuario público</h2>
+                  <div role="form">
+                    <div class="form-group">
+                      <label for="usernameInput">Nombre de usuario:</label>
+                      <input type="text" class="form-control" id="usernameInput" placeholder="Introduzca el nombre de usuario">
+                      </div>
+                    <button id="userSearchButton" class="btn btn-default">Buscar</button>
+                  </div>
+            </div>
         </div>
         
-        <div id="page">
-            <div id= "contents">
-                <input type="button"  id = "menu1"  value="Boton 1" >
-                <input type="button"  id = "menu2"  value="Boton 2" >
-                <input type="button"  id = "menu3"  value="Boton 3" >
-                <input type="button"  id = "menu4"  value="Boton 4" >
-                <input type="button"  id = "menu5"  value="Boton 5" >        
-       
-             </div> 
-
-            <div id= "texto 1">
-            <input type="date" id="date_input" >
-            <input type="button"  id = "enviar1"  value="Enviar" >    
-
+        <div class="pageSection container-fluid">
+            <div id="username">
             </div>
+            <div id="optionsSearch">
+                <div id= "contents">
+                    <input class="btn btn-default" type="button"  id = "menu1"  value="Búsqueda desde fecha">
+                    <input class="btn btn-default" type="button"  id = "menu2"  value="Búsqueda hasta fecha" >
+                    <input class="btn btn-default" type="button"  id = "menu3"  value="Búsqueda por tags" >
+                    <input class="btn btn-default" type="button"  id = "menu4"  value="Búsqueda por contenido" >
+                    <input class="btn btn-default" type="button"  id = "menu5"  value="Búsqueda por título" >   
+                    <input class="btn btn-default" type="button"  id = "menu6"  value="Búsqueda por galería" >
+                </div> 
+                <div class="formInput" id="opcion1">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="date_input">Fecha mínima:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" type="date" id="date_input" >
+                        </div>
+                        <div class="col-md-2">
+                            <input class="btn btn-default" type="button"  id = "enviar1"  value="Enviar" >
+                        </div>
+                    </div>
+                       
+                </div>
 
-            <div id= "texto 2">
-            <input type="date" id = "date_input2" > 
-            <input type="button"  id = "enviar2"  value="Enviar" >    
-            </div> 
+                <div class="formInput" id="opcion2">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="date_input2">Fecha máxima:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" type="date" id="date_input2" >
+                        </div>
+                        <div class="col-md-2">
+                            <input class="btn btn-default" type="button"  id = "enviar2"  value="Enviar" >
+                        </div>
+                    </div>   
+                </div> 
 
-            <div id= "texto 3">
-            <input type="text" id = "input3" > 
-            <input type="button"  id = "enviar3"  value="Enviar" >    
-            </div> 
+                <div id="opcion3">
+                    <div class="formInput">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="date_input3">Tags:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input placeholder="Introduzca los tags separados por comas" class="form-control" type="text" id="input3" >
+                            </div>
+                            <div class="col-md-2">
+                                <input class="btn btn-default" type="button"  id = "enviar3"  value="Enviar" >
+                            </div>
+                        </div>   
+                    </div>  
+                </div> 
 
-            <div id= "texto 4">
-            <input type="text" id = "input4" >  
-            <input type="button"  id = "enviar4"  value="Enviar" >    
-            </div>
+                <div id="opcion4">
+                    <div class="formInput">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="date_input3">Contenido:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input placeholder="Introduzca el texto a buscar" class="form-control" type="text" id="input4" >
+                            </div>
+                            <div class="col-md-2">
+                                <input class="btn btn-default" type="button"  id = "enviar4"  value="Enviar" >
+                            </div>
+                        </div>   
+                    </div>   
+                </div>
 
-            <div id= "texto 5">
-            <input type="text" id = "input5" >
-            <input type="button"  id = "enviar5"  value="Enviar" >    
-            </div>  
+                <div id="opcion5">
+                    <div class="formInput">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="date_input3">Título:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input placeholder="Introduzca el título a buscar" class="form-control" type="text" id="input5" >
+                            </div>
+                            <div class="col-md-2">
+                                <input class="btn btn-default" type="button"  id = "enviar5"  value="Enviar" >
+                            </div>
+                        </div>   
+                    </div>     
+                </div>  
 
-            <div id="texto 6">
-                <select id="galleries">
+                <div id="opcion6">
+                    <div class="formInput">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="date_input3">Gelerías:</label>
+                            </div>
+                            <div id="galleriesDiv" class="col-md-8">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="btn btn-default" type="button"  id = "enviar6"  value="Enviar" >
+                            </div>
+                        </div>   
+                    </div> 
+                </div>
 
-                </select>
-                <input type="button" id="enviar6" value="Enviar">
-            </div>
+                <div id="criterio">
 
-            <div id="criterio">
+                </div>
 
-            </div>
-
-            <div id="images">
-
-            </div>
+                <div id="return">
+                    <input class="btn btn-default" type="button"  id = "volver"  value="Volver" > 
+                </div>
             
+                <div id="images">
+
+                </div>
+            </div>
         </div>
             
     </body>

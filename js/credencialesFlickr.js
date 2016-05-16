@@ -8,6 +8,32 @@ $(function() {
     var user_info;
     var galleries = [];
     
+    //Menu control
+    var option = 1;
+    
+    //User Searched
+    var searchedUser = false;
+    
+    
+    $( document ).ready(function() {
+        $("#opcion2").hide();
+        $("#opcion3").hide();
+        $("#opcion4").hide();
+        $("#opcion5").hide();
+        $("#opcion6").hide();
+        $("#optionsSearch").hide(); 
+        $("#return").hide();
+    });
+    
+    function updateUser(){
+        if(searchedUser){
+            searchedUser = false;
+        }
+        else{
+            searchedUser = true;
+        }
+    }
+    
     //Envents
     $("#userSearchButton").click(function(){
         //username = $("#usernameInput").val();
@@ -53,6 +79,125 @@ $(function() {
     })
 
     
+    $("#menu1").click(function(){
+        hideDiv(option);
+        option = 1;
+        showDiv(option);
+        emptySearch();
+    })
+    
+    $("#menu2").click(function(){
+        hideDiv(option);
+        option = 2;
+        showDiv(option);
+        emptySearch();
+    })
+    
+    $("#menu3").click(function(){
+        hideDiv(option);
+        option = 3;
+        showDiv(option);
+        emptySearch();
+    })
+    
+    $("#menu4").click(function(){
+        hideDiv(option);
+        option = 4;
+        showDiv(option);
+        emptySearch();
+    })
+    
+    $("#menu5").click(function(){
+        hideDiv(option);
+        option = 5;
+        showDiv(option);
+        emptySearch();
+    })
+    
+    $("#menu6").click(function(){
+        hideDiv(option);
+        option = 6;
+        showDiv(option);
+        emptySearch();
+    })
+    
+    $("#volver").click(function(){
+        $("#return").fadeOut(500);
+        $("#optionsSearch").fadeOut(500);
+        $("#username").fadeOut(500, function(){
+            $("#formSearch").fadeIn(500);
+            $("#username").empty();
+            $("#galleriesDiv").empty();
+            galleries = [];
+        });
+    })
+    
+    function emptySearch(){
+        $("#criterio").empty();
+        $("#images").empty();
+    }
+    
+    
+    function showDiv(num){
+        switch(num){
+            case 1:
+                $("#menu1").addClass("active");
+                $("#opcion1").show();
+                break;
+            case 2:
+                $("#menu2").addClass("active");
+                $("#opcion2").show();
+                break;
+            case 3:
+                $("#menu3").addClass("active");
+                $("#opcion3").show();
+                break;
+            case 4:
+                $("#menu4").addClass("active");
+                $("#opcion4").show();
+                break;
+            case 5:
+                $("#menu5").addClass("active");
+                $("#opcion5").show();
+                break;
+            case 6:
+                $("#menu6").addClass("active");
+                $("#opcion6").show();
+                break;
+        }
+    }
+    
+    
+    function hideDiv(num){
+        switch(num){
+            case 1:
+                $("#menu1").removeClass("active");
+                $("#opcion1").hide();
+                break;
+            case 2:
+                $("#menu2").removeClass("active");
+                $("#opcion2").hide();
+                break;
+            case 3:
+                $("#menu3").removeClass("active");
+                $("#opcion3").hide();
+                break;
+            case 4:
+                $("#menu4").removeClass("active");
+                $("#opcion4").hide();
+                break;
+            case 5:
+                $("#menu5").removeClass("active");
+                $("#opcion5").hide();
+                break;
+            case 6:
+                $("#menu6").removeClass("active");
+                $("#opcion6").hide();
+                break;
+        }
+    }
+    
+    
     function restPetition(listParams){
         var result = url;
         for(i = 0; i < listParams.length; i++){
@@ -97,19 +242,29 @@ $(function() {
 
         .done(function(data){
             if(data.stat == "fail"){
-                console.log("User not found");
+                alert("Usuario no encontrado");
             }
             else{
-                    user_id = data.user.nsid;
-                    console.log(user_id);
-                    console.log("Id loaded");       
+                user_id = data.user.nsid;
+                console.log(user_id);
+                console.log("Id loaded"); 
+                
+                    //If user found we load search options
+                $("#formSearch").fadeOut(500, function(){
+                $("#optionsSearch").fadeIn(500);
+                $("#return").fadeIn(500);
+                $("#username").append("<h1 class='Three-Dee'>" + username + "</h1>");
+                $("#username").fadeIn(500);
+                getGalleriesById(user_id)
+            });
+                
+            $("#menu1").trigger('click');
             }
         })
 
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
-        getGalleriesById(user_id)
         
     }
     
@@ -408,6 +563,7 @@ $(function() {
                 }
                 console.log(galleries);
                 console.log("Galerias cargadas");
+                $("#galleriesDiv").append("<select class='form-control' id='galleries'></select>");
                 for(i = 0; i < galleries.length; i++){
                     $("#galleries").append($("<option>" + galleries[i].title._content +"</option>").attr("value", galleries[i].id));
                 }
@@ -467,142 +623,6 @@ $(function() {
         });
     }
     
-    /*
-    function getPhotosByUserId(user_id){
-        //Params
-        var urlRest = restPetition([
-            {   "param" : "method",
-                "value" : "flickr.photos.search"
-            },
-            {   "param": "api_key",
-                "value": api_key
-            },
-            {
-                "param": "user_id",
-                "value": user_id
-            },
-            {   "param": "format",
-                "value": "json"
-            },
-            {
-                "param": "nojsoncallback",
-                "value": "1"
-            }
-        ]);
-        
-        //Get data
-        $.getJSON(urlRest)
-        
-        .done(function(data){
-            if(data.stat == "fail"){
-                console.log("Fallo al cargar imágenes");
-                alert("Fallo al cargar imágenes");
-            }
-            else{ 
-                var i;
-                var photos = data.photos.photo;
-                var urls = [];
-                var petitionsArray = [];
-                var totalFavs;
-                for(i = 0; i < photos.length; i++){
-                    var photo_id = data.photos.photo[i].id;
-                    
-                    //url string method
-                    var urlRest = restPetition([
-                        {   "param" : "method",
-                            "value" : "flickr.photos.getFavorites"
-                        },
-                        {   "param": "api_key",
-                            "value": api_key
-                        },
-                        {
-                            "param": "photo_id",
-                            "value": photo_id
-                        },
-                        {   "param": "format",
-                            "value": "json"
-                        },
-                        {
-                            "param": "nojsoncallback",
-                            "value": "1"
-                        }
-                    ]);
-                    urls.push(urlRest);
-                    var xmlhttp = new XMLHttpRequest();
-                    petitionsArray.push(xmlhttp);
-                }
-                
-                var j;
-                console.log(urls);
-                for(j = 0; j < urls.length; j++){
-                    //Rest petition without background
-                    var xmlhttpItem = petitionsArray[j];
-                    
-                    //Petition
-                    xmlhttpItem.open("GET", urls[j], true);
-                    xmlhttpItem.send();
-                    //Response Listener
-                    xmlhttpItem.onreadystatechange = function(){
-                        if (xmlhttpItem.readyState == 4 && xmlhttpItem.status == 200){
-                            totalFavs = JSON.parse(xmlhttpItem.responseText);
-                            console.log(totalFavs);
-                            console.log(j);
-                        }
-                    } 
-                }
-                
-                
-            }
-        })
-        
-        .fail(function(){
-            console.log("Error al cargar el recurso");
-        });
-    }
-        
-    function getFavsByPhotoId(photo_id){
-        //Params
-        var urlRest = restPetition([
-            {   "param" : "method",
-                "value" : "flickr.photos.search"
-            },
-            {   "param": "api_key",
-                "value": api_key
-            },
-            {
-                "param": "photo_id",
-                "value": photo_id
-            },
-            {   "param": "format",
-                "value": "json"
-            },
-            {
-                "param": "nojsoncallback",
-                "value": "1"
-            }
-        ]);
-        
-        //Get data
-        $.getJSON(urlRest)
-        
-        .done(function(data){
-            if(data.stat == "fail"){
-                console.log("Fallo al cargar Favoritos");
-                alert("Fallo al cargar favoritos");
-            }
-            else{ 
-                var favs = data.photo.total;
-                console.log(favs);
-            }
-        })
-        
-        .fail(function(){
-            console.log("Error al cargar el recurso");
-        });
-    }
-    
-    */
-    
     function mostrar_fotos(info){
         var i;
         $("#images").empty();
@@ -611,12 +631,37 @@ $(function() {
         }
         for (i=0;i<info.photos.photo.length;i++) {
            var item = info.photos.photo[i];
+           var urlSmall = 'https://farm'+item.farm+".staticflickr.com/"+item.server
+                      +'/'+item.id+'_'+item.secret+'_m.jpg';
            var url = 'https://farm'+item.farm+".staticflickr.com/"+item.server
                       +'/'+item.id+'_'+item.secret+'_c.jpg';
-           console.debug(url);
-           $("#images").append($("<img/>").attr("src",url));
+           console.debug(url);    
+            
+            /* Miniatura */
+           $("#images").append($("<a></a>").attr("id", "imageLink_" + i));
+           $("#imageLink_" + i).attr("data-toggle", "modal");
+           $("#imageLink_" + i).attr("data-target", "#popup_" + i); 
+            
+           $("#imageLink_" + i).append($("<img/>").attr("id","image_" + i));
+           $("#image_" + i).attr("src", urlSmall);
+           $("#image_" + i).attr("class", "img-thumbnail image");  
+            
+            /* Popup */
+            $("#images").append($("<div></div>").attr("id", "popup_" + i));
+            $("#popup_" + i).attr("class", "modal fade");
+            $("#popup_" + i).attr("class", "modal fade");
+            $("#popup_" + i).attr("tabindex", "-1");
+            $("#popup_" + i).attr("role", "dialog");
+            $("#popup_" + i).attr("aria-labelledby", "myModalLabel");
+            $("#popup_" + i).attr("aria-hidden", "true");
+            $("#popup_" + i).append($("<div class='modal-dialog'></div>")
+                                .append($("<div class='modal-content'></div>")
+                                .append($("<div class='modal-body'></div>")
+                                .append($("<img class='img-responsive'/>").attr("src", url)))));                                              
         }
     }
+    
+    
     
     
 })
