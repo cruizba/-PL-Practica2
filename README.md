@@ -1,3 +1,3 @@
--PL- PRÁCTICA 2
+-SD- PRÁCTICA 2
 
 Buscador de flickr utilizando ajax
