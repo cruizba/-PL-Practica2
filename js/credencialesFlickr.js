@@ -15,7 +15,8 @@ $(function() {
     var searchedUser = false;
     
     
-    $( document ).ready(function() {
+    /* Menu initialization */
+    $(document).ready(function() {
         $("#opcion2").hide();
         $("#opcion3").hide();
         $("#opcion4").hide();
@@ -25,58 +26,43 @@ $(function() {
         $("#return").hide();
     });
     
-    function updateUser(){
-        if(searchedUser){
-            searchedUser = false;
-        }
-        else{
-            searchedUser = true;
-        }
-    }
-    
-    //Envents
+    /* Events handler */
+    /* Principal buttons and functions are called here */
     $("#userSearchButton").click(function(){
-        //username = $("#usernameInput").val();
         username = $("#usernameInput").val();
         getIdByUserName();
-    })
+    });
     
     $("#enviar1").click(function(){
         var date = $("#date_input").val();
-        console.log(date);
         getPhotosByMinDate(user_id, date);     
-    })
+    });
     
     $("#enviar2").click(function(){
         var date = $("#date_input2").val();
-        console.log(date);
         getPhotosByMaxDate(user_id, date);
-    })
+    });
     
     $("#enviar3").click(function(){
         var tags = $("#input3").val();
-        console.log(tags);
         getPhotosByTags(user_id, tags);
         
     })
     
     $("#enviar4").click(function(){
         var text = $("#input4").val();
-        console.log(text);
         getPhotosByContent(user_id, text);
-    })
+    });
     
     $("#enviar5").click(function(){
-        //var num = $("#input5").val();
-        //console.log(num);
         var input_name = $("#input5").val();
         getPhotosByUserId(user_id, input_name);
-    })
+    });
     
     $("#enviar6").click(function(){
         var input_id = $("#galleries").val();
         getPhotosByGalleryId(input_id);
-    })
+    });
 
     
     $("#menu1").click(function(){
@@ -84,7 +70,7 @@ $(function() {
         option = 1;
         showDiv(option);
         emptySearch();
-    })
+    });
     
     $("#menu2").click(function(){
         hideDiv(option);
@@ -105,21 +91,21 @@ $(function() {
         option = 4;
         showDiv(option);
         emptySearch();
-    })
+    });
     
     $("#menu5").click(function(){
         hideDiv(option);
         option = 5;
         showDiv(option);
         emptySearch();
-    })
+    });
     
     $("#menu6").click(function(){
         hideDiv(option);
         option = 6;
         showDiv(option);
         emptySearch();
-    })
+    });
     
     $("#volver").click(function(){
         $("#return").fadeOut(500);
@@ -130,14 +116,18 @@ $(function() {
             $("#galleriesDiv").empty();
             galleries = [];
         });
-    })
+    });
     
+    /** This function clear images loaded when other options is actived */
     function emptySearch(){
         $("#criterio").empty();
         $("#images").empty();
     }
     
-    
+    /**
+    * The function shows options depending on the variable num.
+    * @param {Number} num 
+    */
     function showDiv(num){
         switch(num){
             case 1:
@@ -168,6 +158,11 @@ $(function() {
     }
     
     
+    
+    /**
+    * The function hide options depending on the variable num. 
+    * @param {Number} num 
+    */
     function hideDiv(num){
         switch(num){
             case 1:
@@ -198,6 +193,10 @@ $(function() {
     }
     
     
+    /**
+     * This function return an string with the petition url.
+     * @param listParams
+     */
     function restPetition(listParams){
         var result = url;
         for(i = 0; i < listParams.length; i++){
@@ -212,7 +211,9 @@ $(function() {
         return result;
     }
     
-    //Functions
+    /**
+     * This function call ApiRest and load the user id.
+     */
     function getIdByUserName(){
         //Params
         var urlRest = restPetition([
@@ -249,11 +250,11 @@ $(function() {
                 console.log(user_id);
                 console.log("Id loaded"); 
                 
-                    //If user found we load search options
+                //If user found we load search options
                 $("#formSearch").fadeOut(500, function(){
                 $("#optionsSearch").fadeIn(500);
                 $("#return").fadeIn(500);
-                $("#username").append("<h1 class='Three-Dee'>" + username + "</h1>");
+                $("#username").append("<h1 class='Three-Dee' id='userNameHeader'>" + username + "</h1>");
                 $("#username").fadeIn(500);
                 getGalleriesById(user_id)
             });
@@ -268,6 +269,11 @@ $(function() {
         
     }
     
+    /** This function call ApiRest and load photos from an user and a minimum date. 
+    This function append images to HTML concurrently too
+    @param {String} user_id
+    @param {String} date_input
+    */
     function getPhotosByMinDate(user_id, date_input){
         //Params
         var urlRest = restPetition([
@@ -306,7 +312,6 @@ $(function() {
                 $("#criterio").empty();
                 console.log("Criterio borrado");
                 photos = data;
-                console.log(photos);
                 $("#criterio").append($("<h2>Resultados a partir de " + date_input + " </h2>"));
                 console.log("criterio escrito")
                 mostrar_fotos(photos);
@@ -318,6 +323,12 @@ $(function() {
         });
     }
     
+    /**
+    * This function call ApiRest and load photos from an user and a maximum date. 
+    * This function append images to HTML concurrently too
+    * @param {String} user_id
+    * @param {String} date_input
+    */
     function getPhotosByMaxDate(user_id, date_input){
         //Params
         var urlRest = restPetition([
@@ -356,7 +367,6 @@ $(function() {
                 $("#criterio").empty();
                 console.log("Criterio borrado");
                 photos = data;
-                console.log(photos);
                 $("#criterio").append($("<h2>Resultados hasta " + date_input + " </h2>"));
                 console.log("criterio escrito")
                 mostrar_fotos(photos);
@@ -368,6 +378,12 @@ $(function() {
         });
     }
     
+    /**
+    * This function call ApiRest and load photos from an user and tags related with the user. 
+    * This function append images to HTML concurrently too
+    * @param {String} user_id
+    * @param {String} tags
+    */
     function getPhotosByTags(user_id, tags){
         //Params
         var urlRest = restPetition([
@@ -406,7 +422,6 @@ $(function() {
                 $("#criterio").empty();
                 console.log("Criterio borrado");
                 photos = data;
-                console.log(photos);
                 $("#criterio").append($("<h2>Resultados por las etiquetas: " + tags + " </h2>"));
                 console.log("criterio escrito")
                 mostrar_fotos(photos);
@@ -418,6 +433,12 @@ $(function() {
         });
     }
     
+    /**
+    * This function call ApiRest and load photos from an user with content defined in "content". 
+    * This function append images to HTML concurrently too
+    * @param {String} user_id
+    * @param {String} content
+    */
     function getPhotosByContent(user_id, content){
         //Params
         var urlRest = restPetition([
@@ -456,7 +477,6 @@ $(function() {
                 $("#criterio").empty();
                 console.log("Criterio borrado");
                 photos = data;
-                console.log(photos);
                 $("#criterio").append($("<h2>Fotos que contienen el siguiente texto: " + content + " </h2>"));
                 console.log("criterio escrito")
                 mostrar_fotos(photos);
@@ -468,6 +488,12 @@ $(function() {
         });
     }
     
+    /**
+    * This function call ApiRest and load photos from an user and a title. 
+    * This function append images to HTML concurrently too
+    * @param {String} user_id
+    * @param {String} input_name
+    */
     function getPhotosByUserId(user_id, input_name){
         //Params
         var fileteredArray = {"photos" : {"photo" : []}};
@@ -508,7 +534,6 @@ $(function() {
                     }
                     
                }
-                console.log(fileteredArray);
                 $("#criterio").empty();
                 console.log("Criterio borrado");
                 $("#criterio").append($("<h2>Resultados por titulos que contienen:  " + input_name + " </h2>"));
@@ -522,6 +547,12 @@ $(function() {
         });
     }
     
+    /**
+    * This function call ApiRest and load galleries from an user. 
+    * This function is called after user_id is loaded, so this call is configured to run synchronusly
+    * after the id is loaded
+    * @param {String} user_id
+    */
     function getGalleriesById(user_id){
         //Params
         var urlRest = restPetition([
@@ -561,7 +592,6 @@ $(function() {
                     var gallery = data.galleries.gallery[i];
                     galleries.push(data.galleries.gallery[i]);
                 }
-                console.log(galleries);
                 console.log("Galerias cargadas");
                 $("#galleriesDiv").append("<select class='form-control' id='galleries'></select>");
                 for(i = 0; i < galleries.length; i++){
@@ -575,6 +605,12 @@ $(function() {
         });
     }
     
+    /**
+    * This function call ApiRest and load photos from a gallery. 
+    * This function is called after user_id is loaded, so this call is configured to run synchronusly
+    * after the id is loaded
+    * @param {String} gallery_id
+    */
     function getPhotosByGalleryId(gallery_id){
         //Params
         var urlRest = restPetition([
@@ -611,7 +647,6 @@ $(function() {
                 $("#criterio").empty();
                 console.log("Criterio borrado");
                 photos = data;
-                console.log(photos);
                 $("#criterio").append($("<h2>Fotos de la galeria </h2>"));
                 console.log("criterio escrito");
                 mostrar_fotos(photos);
@@ -623,6 +658,11 @@ $(function() {
         });
     }
     
+    /**
+    * This function append to html, thumbnails and popup photos from "info" that contains
+    * necessary data to build images urls.
+    * @param info 
+    */
     function mostrar_fotos(info){
         var i;
         $("#images").empty();
@@ -634,8 +674,7 @@ $(function() {
            var urlSmall = 'https://farm'+item.farm+".staticflickr.com/"+item.server
                       +'/'+item.id+'_'+item.secret+'_m.jpg';
            var url = 'https://farm'+item.farm+".staticflickr.com/"+item.server
-                      +'/'+item.id+'_'+item.secret+'_c.jpg';
-           console.debug(url);    
+                      +'/'+item.id+'_'+item.secret+'_c.jpg'; 
             
             /* Miniatura */
            $("#images").append($("<a></a>").attr("id", "imageLink_" + i));
