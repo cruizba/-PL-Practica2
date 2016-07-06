@@ -1,20 +1,20 @@
 $(function() {
-
+    
     //Variables
     var username;
-    var api_key = "2dbe394baf14ce99b3aca8afb439f0ff";
     var url = "https://api.flickr.com/services/rest/?";
-    var user_id;
     var user_info;
     var galleries = [];
-    
+
     //Menu control
     var option = 1;
-    
+
     //User Searched
     var searchedUser = false;
     
-    
+    $("#date_input").datepicker();
+    $("#date_input2").datepicker();
+
     /* Menu initialization */
     $(document).ready(function() {
         $("#opcion2").hide();
@@ -25,88 +25,88 @@ $(function() {
         $("#optionsSearch").hide(); 
         $("#return").hide();
     });
-    
+
     /* Events handler */
     /* Principal buttons and functions are called here */
     $("#userSearchButton").click(function(){
         username = $("#usernameInput").val();
         getIdByUserName();
     });
-    
+
     $("#enviar1").click(function(){
         var date = $("#date_input").val();
         getPhotosByMinDate(user_id, date);     
     });
-    
+
     $("#enviar2").click(function(){
         var date = $("#date_input2").val();
         getPhotosByMaxDate(user_id, date);
     });
-    
+
     $("#enviar3").click(function(){
         var tags = $("#input3").val();
         getPhotosByTags(user_id, tags);
-        
+
     })
-    
+
     $("#enviar4").click(function(){
         var text = $("#input4").val();
         getPhotosByContent(user_id, text);
     });
-    
+
     $("#enviar5").click(function(){
         var input_name = $("#input5").val();
         getPhotosByUserId(user_id, input_name);
     });
-    
+
     $("#enviar6").click(function(){
         var input_id = $("#galleries").val();
         getPhotosByGalleryId(input_id);
     });
 
-    
+
     $("#menu1").click(function(){
         hideDiv(option);
         option = 1;
         showDiv(option);
         emptySearch();
     });
-    
+
     $("#menu2").click(function(){
         hideDiv(option);
         option = 2;
         showDiv(option);
         emptySearch();
     })
-    
+
     $("#menu3").click(function(){
         hideDiv(option);
         option = 3;
         showDiv(option);
         emptySearch();
     })
-    
+
     $("#menu4").click(function(){
         hideDiv(option);
         option = 4;
         showDiv(option);
         emptySearch();
     });
-    
+
     $("#menu5").click(function(){
         hideDiv(option);
         option = 5;
         showDiv(option);
         emptySearch();
     });
-    
+
     $("#menu6").click(function(){
         hideDiv(option);
         option = 6;
         showDiv(option);
         emptySearch();
     });
-    
+
     $("#volver").click(function(){
         $("#return").fadeOut(500);
         $("#optionsSearch").fadeOut(500);
@@ -117,13 +117,13 @@ $(function() {
             galleries = [];
         });
     });
-    
+
     /** This function clear images loaded when other options is actived */
     function emptySearch(){
         $("#criterio").empty();
         $("#images").empty();
     }
-    
+
     /**
     * The function shows options depending on the variable num.
     * @param {Number} num 
@@ -156,9 +156,9 @@ $(function() {
                 break;
         }
     }
-    
-    
-    
+
+
+
     /**
     * The function hide options depending on the variable num. 
     * @param {Number} num 
@@ -191,8 +191,8 @@ $(function() {
                 break;
         }
     }
-    
-    
+
+
     /**
      * This function return an string with the petition url.
      * @param listParams
@@ -210,7 +210,7 @@ $(function() {
         }
         return result;
     }
-    
+
     /**
      * This function call ApiRest and load the user id.
      */
@@ -234,7 +234,7 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON({
             url: urlRest,
@@ -248,8 +248,8 @@ $(function() {
             else{
                 user_id = data.user.nsid;
                 console.log(user_id);
-                console.log("Id loaded"); 
-                
+                console.log("Id loaded -> user_id = " + user_id);
+
                 //If user found we load search options
                 $("#formSearch").fadeOut(500, function(){
                 $("#optionsSearch").fadeIn(500);
@@ -258,7 +258,7 @@ $(function() {
                 $("#username").fadeIn(500);
                 getGalleriesById(user_id)
             });
-                
+
             $("#menu1").trigger('click');
             }
         })
@@ -266,9 +266,9 @@ $(function() {
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
-        
+
     }
-    
+
     /** This function call ApiRest and load photos from an user and a minimum date. 
     This function append images to HTML concurrently too
     @param {String} user_id
@@ -299,10 +299,10 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON(urlRest)
-        
+
         .done(function(data){
             if(data.stat == "fail"){
                 console.log("Fallo al cargar imágenes");
@@ -317,12 +317,12 @@ $(function() {
                 mostrar_fotos(photos);
             }
         })
-        
+
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
     }
-    
+
     /**
     * This function call ApiRest and load photos from an user and a maximum date. 
     * This function append images to HTML concurrently too
@@ -354,10 +354,10 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON(urlRest)
-        
+
         .done(function(data){
             if(data.stat == "fail"){
                 console.log("Fallo al cargar imágenes");
@@ -372,12 +372,12 @@ $(function() {
                 mostrar_fotos(photos);
             }
         })
-        
+
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
     }
-    
+
     /**
     * This function call ApiRest and load photos from an user and tags related with the user. 
     * This function append images to HTML concurrently too
@@ -409,10 +409,10 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON(urlRest)
-        
+
         .done(function(data){
             if(data.stat == "fail"){
                 console.log("Fallo al cargar imágenes");
@@ -427,12 +427,12 @@ $(function() {
                 mostrar_fotos(photos);
             }
         })
-        
+
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
     }
-    
+
     /**
     * This function call ApiRest and load photos from an user with content defined in "content". 
     * This function append images to HTML concurrently too
@@ -464,10 +464,10 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON(urlRest)
-        
+
         .done(function(data){
             if(data.stat == "fail"){
                 console.log("Fallo al cargar imágenes");
@@ -482,12 +482,12 @@ $(function() {
                 mostrar_fotos(photos);
             }
         })
-        
+
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
     }
-    
+
     /**
     * This function call ApiRest and load photos from an user and a title. 
     * This function append images to HTML concurrently too
@@ -516,10 +516,10 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON(urlRest)
-        
+
         .done(function(data){
             if(data.stat == "fail"){
                 console.log("Fallo al cargar imágenes");
@@ -532,7 +532,7 @@ $(function() {
                     if(title.indexOf(input_name) != -1){
                         fileteredArray.photos.photo.push(data.photos.photo[i]);
                     }
-                    
+
                }
                 $("#criterio").empty();
                 console.log("Criterio borrado");
@@ -541,12 +541,12 @@ $(function() {
                 mostrar_fotos(fileteredArray);
             }
         })
-        
+
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
     }
-    
+
     /**
     * This function call ApiRest and load galleries from an user. 
     * This function is called after user_id is loaded, so this call is configured to run synchronusly
@@ -574,13 +574,13 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON({
             url: urlRest,
             async: false
         })
-        
+
         .done(function(data){
             if(data.stat == "fail"){
                 console.log("Fallo al cargar galerias");
@@ -599,12 +599,12 @@ $(function() {
                 }
             }
         })
-        
+
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
     }
-    
+
     /**
     * This function call ApiRest and load photos from a gallery. 
     * This function is called after user_id is loaded, so this call is configured to run synchronusly
@@ -632,12 +632,12 @@ $(function() {
                 "value": "1"
             }
         ]);
-        
+
         //Get data
         $.getJSON({
             url: urlRest,
         })
-        
+
         .done(function(data){
             if(data.stat == "fail"){
                 console.log("Fallo al cargar galerias");
@@ -652,12 +652,12 @@ $(function() {
                 mostrar_fotos(photos);
             }
         })
-        
+
         .fail(function(){
             console.log("Error al cargar el recurso");
         });
     }
-    
+
     /**
     * This function append to html, thumbnails and popup photos from "info" that contains
     * necessary data to build images urls.
@@ -675,16 +675,16 @@ $(function() {
                       +'/'+item.id+'_'+item.secret+'_m.jpg';
            var url = 'https://farm'+item.farm+".staticflickr.com/"+item.server
                       +'/'+item.id+'_'+item.secret+'_c.jpg'; 
-            
+
             /* Miniatura */
            $("#images").append($("<a></a>").attr("id", "imageLink_" + i));
            $("#imageLink_" + i).attr("data-toggle", "modal");
            $("#imageLink_" + i).attr("data-target", "#popup_" + i); 
-            
+
            $("#imageLink_" + i).append($("<img/>").attr("id","image_" + i));
            $("#image_" + i).attr("src", urlSmall);
            $("#image_" + i).attr("class", "img-thumbnail image");  
-            
+
             /* Popup */
             $("#images").append($("<div></div>").attr("id", "popup_" + i));
             $("#popup_" + i).attr("class", "modal fade");
@@ -699,8 +699,5 @@ $(function() {
                                 .append($("<img class='img-responsive'/>").attr("src", url)))));                                              
         }
     }
-    
-    
-    
-    
+
 })

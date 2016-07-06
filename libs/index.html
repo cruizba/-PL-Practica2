@@ -4,20 +4,24 @@
         <title>Flickr Searcher</title>
         
         <script type="text/javascript" src="libs/jquery-2.2.3.min.js"></script>
-        <script type="text/javascript" src="credencialesFlickr.js"></script>
-        <script type="text/javascript" src="js/flickr.js"></script>
+        <script type="text/javascript" src="js/credencialesFlickr.js"></script>
         <link rel="stylesheet" type="text/css" href="styles/main.css"></link>
         <link href='http://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet' type='text/css'>
         <link href="styles/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="libs/jquery-ui.min.css">
     
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script src="libs/jquery-ui.min.js"></script>
+		<script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+		<!-- cdn for modernizr, if you haven't included it already -->
+		<script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+		<!-- polyfiller file to detect and load polyfills -->
+		<script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+		<script>
+		  webshims.setOptions('waitReady', false);
+		  webshims.setOptions('forms-ext', {types: 'date'});
+		  webshims.polyfill('forms forms-ext');
+		</script>
     </head>
-
-    
     <body>
-        <!-- User searching form -->
         <div id="formSearch">
             <div class="pageSection container-fluid">
                 <h1 class="Three-Dee">Flickr Searcher</h1>
@@ -31,19 +35,11 @@
                   </div>
             </div>
         </div>
-        <!-- End User searching form -->
-        
         
         <div class="pageSection container-fluid">
-            
-            <!-- Username from the actual search -->
             <div id="username">
             </div>
-            
-            <!-- Menu options -->
             <div id="optionsSearch">
-                
-                
                 <div id= "contents">
                     <input class="btn btn-default" type="button"  id = "menu1"  value="Búsqueda desde fecha">
                     <input class="btn btn-default" type="button"  id = "menu2"  value="Búsqueda hasta fecha" >
@@ -52,16 +48,13 @@
                     <input class="btn btn-default" type="button"  id = "menu5"  value="Búsqueda por título" >   
                     <input class="btn btn-default" type="button"  id = "menu6"  value="Búsqueda por galería" >
                 </div> 
-                <!-- End menu buttons options -->
-                
-                <!-- Option minimun date -->
                 <div class="formInput" id="opcion1">
                     <div class="row">
                         <div class="col-md-2">
                             <label for="date_input">Fecha mínima:</label>
                         </div>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" id="date_input">
+                            <input class="form-control" type="date" id="date_input" >
                         </div>
                         <div class="col-md-2">
                             <input class="btn btn-default" type="button"  id = "enviar1"  value="Enviar" >
@@ -69,26 +62,21 @@
                     </div>
                        
                 </div>
-                <!-- Option minimun date -->
-                
-                
-                <!-- Option maximum date -->
+
                 <div class="formInput" id="opcion2">
                     <div class="row">
                         <div class="col-md-2">
                             <label for="date_input2">Fecha máxima:</label>
                         </div>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" id="date_input2" >
+                            <input class="form-control" type="date" id="date_input2" >
                         </div>
                         <div class="col-md-2">
                             <input class="btn btn-default" type="button"  id = "enviar2"  value="Enviar" >
                         </div>
                     </div>   
-                </div>
-                <!-- End Option maximum date -->
+                </div> 
 
-                <!-- Option tags -->
                 <div id="opcion3">
                     <div class="formInput">
                         <div class="row">
@@ -104,9 +92,7 @@
                         </div>   
                     </div>  
                 </div> 
-                <!-- End Option tags -->
-                
-                <!-- Option content -->
+
                 <div id="opcion4">
                     <div class="formInput">
                         <div class="row">
@@ -122,9 +108,7 @@
                         </div>   
                     </div>   
                 </div>
-                <!-- End Option content -->
-                
-                <!-- Option title -->
+
                 <div id="opcion5">
                     <div class="formInput">
                         <div class="row">
@@ -139,10 +123,8 @@
                             </div>
                         </div>   
                     </div>     
-                </div>
-                <!-- End Option title -->
-                
-                <!-- Option gallery -->
+                </div>  
+
                 <div id="opcion6">
                     <div class="formInput">
                         <div class="row">
@@ -157,30 +139,19 @@
                         </div>   
                     </div> 
                 </div>
-                <!-- End Option gallery -->
 
-                <!-- used Criterio -->
                 <div id="criterio">
-                    
-                    
+
                 </div>
-                <!-- End used Criterio -->
-                
-                <!-- Back button -->
+
                 <div id="return">
                     <input class="btn btn-default" type="button"  id = "volver"  value="Volver" > 
                 </div>
-                <!-- End back button -->
-                
-                <!-- Results -->
+            
                 <div id="images">
 
                 </div>
-                <!-- End Results -->
-                
             </div>
-            <!-- End Menu options -->
-            
         </div>
         
         <footer id="footerPage">
